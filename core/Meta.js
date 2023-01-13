@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 const Meta = () => (
 	<Head>
-		<title>Login</title>
+		<title>SignIn</title>
 		<meta charSet='utf-8' />
 		<meta name='mobile-web-app-capable' content='yes' />
 		<meta name='apple-mobile-web-app-capable' content='yes' />
@@ -30,7 +30,7 @@ const Meta = () => (
 		<link rel='apple-touch-icon' href='/images/icon-maskable-512.png' />
 		<link rel='icon' type='image/png' href='/images/favicon.png' />
 		<link rel='manifest' href='/manifest.json' />
-	</Head>
+		</Head>
 )
 
 export default Meta

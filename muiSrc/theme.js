@@ -1,29 +1,28 @@
-import { Roboto } from '@next/font/google';
+import { Open_Sans } from '@next/font/google';
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
-export const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+export const open_Sans = Open_Sans({
+  weight:['300', '400', '500', '600', '700', '800'],
+  subsets:["latin"],
+  display:'swap'
 });
 
 // Create a theme instance.
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#003FB9',
     },
     secondary: {
-      main: '#19857b',
+      main: '#0B3558',
     },
     error: {
       main: red.A400,
     },
   },
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    fontFamily: open_Sans.style.fontFamily,
   },
 });
 
