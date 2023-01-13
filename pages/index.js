@@ -40,7 +40,7 @@ function index() {
 
   return (
     <Box sx={{ background: "#FFFFFF" }}>
-      <CustomCenterBox minHeight={"90vh"}>
+      <CustomCenterBox minHeight={"85vh"}>
         <LogIn />
       </CustomCenterBox>
       
