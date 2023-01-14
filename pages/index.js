@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircularProgress, Box, Alert, Snackbar } from "@mui/material";
+import { CircularProgress, Box, Alert, Snackbar ,Stack} from "@mui/material";
 import LogIn from "../components/LogIn";
 import Footer from "../components/footer";
 import { LogInContext } from "../core/sessionhandle/LoginContext";
@@ -26,6 +26,7 @@ function index() {
   const [login, setLogin] = useState(false);
   const [Load, setLoad] = useState(true);
   const [userInfo , setUserInfo] = useState({});
+  const [Info , setInfo] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setLoad(false);
@@ -62,9 +63,25 @@ function index() {
         onClose={() => {
           setSnackbarlog(false);
         }}
-        autoHideDuration={2000}
+        autoHideDuration={1000}
       >
         <Alert severity="success">LogIn success!</Alert>
+      </Snackbar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={(!login)? Info : false }
+
+        autoHideDuration={6000}
+    
+      >
+        <Alert severity="success">
+          
+         Admin : admin@example.com <br/>
+         user : user@example.com  <br/>
+         password : 12345678Aa@   <br/>
+      
+        </Alert>
       </Snackbar>
       <Box sx={{ background: "#FFFFFF" }}>
         {!login ? (
