@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "../../muiSrc/LInk";
 import Cinput from "../CustomComponents/Cinput";
 import ICUSER from "../../public/assets/ic_user.svg";
+import axios from "axios";
 
 function LogIn() {
   const [Email, setEmail] = useState();
@@ -11,8 +12,26 @@ function LogIn() {
   const [Error, setError] = useState(false);
   const [ErrorMessege, setErrorMessege] = useState("");
 
+
+  const isAuthinticate= async()=>{
+
+  
+     try{
+        const {data } = await axios.post('/api/login',{
+          email : Email,
+          password : Pass
+        });
+        alert('success login')
+     }catch(err){
+        setErrorMessege(err.response.data ? err.response.data.message : err.message)
+        setError(true)
+     }
+  }
+
+
+
   const onHandleSubmit = () => {
-    console.log({ Email, Pass });
+
     var Ere = /\S+@\S+\.\S+/;
     let pass =
       /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{8,16}$/;
@@ -31,13 +50,15 @@ function LogIn() {
           setError(true);
         } else {
           setError(false);
-        
+          isAuthinticate();
+          
         }
       }
     } else {
       setErrorMessege("Please Enter Email & password");
       setError(true);
     }
+
   };
 
   return (
