@@ -4,6 +4,7 @@ import LogIn from "../components/LogIn";
 import Footer from "../components/footer";
 import { LogInContext } from "../core/sessionhandle/LoginContext";
 import MainSesson from "../components/MainSesson";
+import Cookies from "js-cookie";
 
 const CustomCenterBox = ({ children, minHeight }) => (
   <Box
@@ -24,11 +25,25 @@ function index() {
   const [SnackbarLog, setSnackbarlog] = useState(false);
   const [login, setLogin] = useState(false);
   const [Load, setLoad] = useState(true);
+  const [userInfo , setUserInfo] = useState({});
   useEffect(() => {
     setTimeout(() => {
       setLoad(false);
     }, 500);
+
+   
+
   }, []);
+
+  useEffect(()=>{
+      
+    if(Cookies.get('userLogin')){
+      setLogin(true);
+      setUserInfo(JSON.parse(Cookies.get('userLogin')))
+    }
+
+  },[])
+
 
   if (Load) {
     return (
@@ -37,9 +52,10 @@ function index() {
       </CustomCenterBox>
     );
   }
-
+  
+  console.log(Cookies.get('userLogin')) 
   return (
-    <LogInContext.Provider value={{ login, setLogin, setSnackbarlog }}>
+    <LogInContext.Provider value={{ login, setLogin, setSnackbarlog,setUserInfo }}>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={SnackbarLog}
@@ -59,7 +75,7 @@ function index() {
             <Footer />
           </React.Fragment>
         ) : (
-          <MainSesson />
+          <MainSesson  username={userInfo.name} isAdmin={userInfo.isAdmin} email={userInfo.email} />
         )}
       </Box>
     </LogInContext.Provider>

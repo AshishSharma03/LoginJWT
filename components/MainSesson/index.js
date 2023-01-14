@@ -2,9 +2,8 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Card,
-  CardContent,
+
   CardHeader,
   Container,
   IconButton,
@@ -21,7 +20,10 @@ import { LogInContext } from "../../core/sessionhandle/LoginContext";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Head from "next/head";
-function MainSesson() {
+import Cookies from "js-cookie";
+
+
+function MainSesson({username,isAdmin,email}) {
   const { setLogin } = useContext(LogInContext);
   return (
     <Box>
@@ -40,6 +42,7 @@ function MainSesson() {
             <IconButton
               onClick={() => {
                 setLogin(false);
+                Cookies.remove('userLogin',{path:'/'})
               }}
             >
               <PowerSettingsNewRoundedIcon
@@ -71,12 +74,12 @@ function MainSesson() {
             title={
               <Stack direction={"row"} alignItems="center">
                 <Typography sx={{ fontSize: "20px", fontWeight: "800" }}>
-                  UserName
+                  {username}
                 </Typography>
-                <VerifiedUserOutlinedIcon sx={{ color: "green" }} />{" "}
+                <VerifiedUserOutlinedIcon sx={{ color:(isAdmin)? "green":'gray' }} />{" "}
               </Stack>
             }
-            subheader={"Developer"}
+            subheader={email}
           />
         </Card>
         <Rating />

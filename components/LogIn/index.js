@@ -6,24 +6,27 @@ import Cinput from "../CustomComponents/Cinput";
 import ICUSER from "../../public/assets/ic_user.svg";
 import axios from "axios";
 import { LogInContext } from "../../core/sessionhandle/LoginContext";
+import Cookies from "js-cookie";
 
 function LogIn() {
   const [Email, setEmail] = useState();
   const [Pass, setPass] = useState();
   const [Error, setError] = useState(false);
   const [ErrorMessege, setErrorMessege] = useState("");
-  const { setLogin ,setSnackbarlog} = useContext(LogInContext);
+  const { setLogin ,setSnackbarlog , setUserInfo} = useContext(LogInContext);
 
   const isAuthinticate= async()=>{
 
-  
      try{
         const {data } = await axios.post('/api/login',{
           email : Email,
           password : Pass
         });
+        
         setLogin(true)
         setSnackbarlog(true)
+        setUserInfo(data)
+        Cookies.set('userLogin',JSON.stringify(data),{expires: 1});
      }catch(err){
         setErrorMessege(err.response.data ? err.response.data.message : err.message)
         setError(true)
@@ -147,7 +150,7 @@ function LogIn() {
         onClick={onHandleSubmit}
       >
         Sign In
-      </Button>
+      </Button> 
     </Box>
   );
 }
