@@ -1,17 +1,18 @@
 import { Box, Avatar, Typography, Stack, Button, Alert } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import Link from "../../muiSrc/LInk";
 import Cinput from "../CustomComponents/Cinput";
 import ICUSER from "../../public/assets/ic_user.svg";
 import axios from "axios";
+import { LogInContext } from "../../core/sessionhandle/LoginContext";
 
 function LogIn() {
   const [Email, setEmail] = useState();
   const [Pass, setPass] = useState();
   const [Error, setError] = useState(false);
   const [ErrorMessege, setErrorMessege] = useState("");
-
+  const { setLogin ,setSnackbarlog} = useContext(LogInContext);
 
   const isAuthinticate= async()=>{
 
@@ -21,7 +22,8 @@ function LogIn() {
           email : Email,
           password : Pass
         });
-        alert('success login')
+        setLogin(true)
+        setSnackbarlog(true)
      }catch(err){
         setErrorMessege(err.response.data ? err.response.data.message : err.message)
         setError(true)
@@ -48,6 +50,7 @@ function LogIn() {
             "Password  must 8 to 16 characters which contain at least one numeric digit, one uppercase and one lowercase letter and  one Special Symbol."
           );
           setError(true);
+
         } else {
           setError(false);
           isAuthinticate();

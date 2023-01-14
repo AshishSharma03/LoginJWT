@@ -19,6 +19,7 @@ export default async function handler(req,res){
         });
     }else{
         res.status(401).send({message: 'Invalid user or password'})
+        res.status(500).send({message:'Internal Server Error'}) 
     }
 
 }
