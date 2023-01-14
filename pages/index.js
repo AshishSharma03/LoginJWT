@@ -53,7 +53,7 @@ function index() {
     );
   }
   
-  console.log(Cookies.get('userLogin')) 
+ 
   return (
     <LogInContext.Provider value={{ login, setLogin, setSnackbarlog,setUserInfo }}>
       <Snackbar
