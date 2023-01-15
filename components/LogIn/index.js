@@ -34,6 +34,7 @@ function LogIn() {
      }catch(err){
       setLoading(false);
         setErrorMessege(err.response.data ? err.response.data.message : err.message)
+        // setErrorMessege( err.message)
         setError(true)
      }
   }
