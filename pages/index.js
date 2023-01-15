@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircularProgress, Box, Alert, Snackbar ,Stack} from "@mui/material";
+import { CircularProgress, Box, Alert, Snackbar, Stack } from "@mui/material";
 import LogIn from "../components/LogIn";
 import Footer from "../components/footer";
 import { LogInContext } from "../core/sessionhandle/LoginContext";
@@ -23,30 +23,41 @@ const CustomCenterBox = ({ children, minHeight }) => (
 
 function index() {
   const [SnackbarLog, setSnackbarlog] = useState(false);
+  const [online, isOnline] = useState(false);
   const [login, setLogin] = useState(false);
   const [Load, setLoad] = useState(true);
-  const [userInfo , setUserInfo] = useState({});
-  const [Info , setInfo] = useState(true);
+  const [userInfo, setUserInfo] = useState({});
+  const [Info, setInfo] = useState(true);
   useEffect(() => {
     setTimeout(() => {
+      isOnline(navigator.onLine)
       setLoad(false);
     }, 500);
-
-   
-
   }, []);
 
-  useEffect(()=>{
-      
-    if(Cookies.get('userLogin')){
+  useEffect(() => {
+    if (Cookies.get("userLogin")) {
       setLogin(true);
-      setUserInfo(JSON.parse(Cookies.get('userLogin')))
-    }else{
-      Cookies.remove('userLogin',{path:'/'})
+      setUserInfo(JSON.parse(Cookies.get("userLogin")));
+    } else {
+      Cookies.remove("userLogin", { path: "/" });
     }
+  }, []);
 
-  },[])
+  useEffect(() => {
+    const handleisOnline = () => {
+      isOnline(navigator.onLine);
+    };
 
+    window.addEventListener("offline", handleisOnline);
+    window.addEventListener("online", handleisOnline);
+
+    // cleanup if we unmount
+    return () => {
+      window.removeEventListener("offline", handleisOnline);
+      window.removeEventListener("online", handleisOnline);
+    };
+  }, [online]);
 
   if (Load) {
     return (
@@ -55,10 +66,17 @@ function index() {
       </CustomCenterBox>
     );
   }
-  
- 
+
   return (
-    <LogInContext.Provider value={{ login, setLogin, setSnackbarlog,setUserInfo }}>
+    <LogInContext.Provider
+      value={{ login, setLogin, setSnackbarlog, setUserInfo }}
+    >
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={!online}
+      >
+        <Alert severity="error">Check your connection!</Alert>
+      </Snackbar>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={SnackbarLog}
@@ -69,22 +87,21 @@ function index() {
       >
         <Alert severity="success">LogIn success!</Alert>
       </Snackbar>
-
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={(!login)? Info : false }
-
-        autoHideDuration={6000}
-    
-      >
-        <Alert severity="success">
-          
-         Admin : admin@example.com <br/>
-         user : user@example.com  <br/>
-         password : 12345678Aa@   <br/>
-      
-        </Alert>
-      </Snackbar>
+      {online ? (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={!login ? Info : false}
+          autoHideDuration={6000}
+        >
+          <Alert severity="success">
+            Admin : admin@example.com <br />
+            user : user@example.com <br />
+            password : 12345678Aa@ <br />
+          </Alert>
+        </Snackbar>
+      ) : (
+        ""
+      )}
       <Box sx={{ background: "#FFFFFF" }}>
         {!login ? (
           <React.Fragment>
@@ -94,7 +111,11 @@ function index() {
             <Footer />
           </React.Fragment>
         ) : (
-          <MainSesson  username={userInfo.name} isAdmin={userInfo.isAdmin} email={userInfo.email} />
+          <MainSesson
+            username={userInfo.name}
+            isAdmin={userInfo.isAdmin}
+            email={userInfo.email}
+          />
         )}
       </Box>
     </LogInContext.Provider>
