@@ -1,4 +1,4 @@
-import { Box, Avatar, Typography, Stack, Button, Alert } from "@mui/material";
+import { Box, Avatar, Typography, Stack, Button, Alert, CircularProgress } from "@mui/material";
 import Image from "next/image";
 import React, { useState ,useContext} from "react";
 import Link from "../../muiSrc/LInk";
@@ -12,22 +12,27 @@ function LogIn() {
   const [Email, setEmail] = useState();
   const [Pass, setPass] = useState();
   const [Error, setError] = useState(false);
+  const [loading,setLoading] = useState(false)
   const [ErrorMessege, setErrorMessege] = useState("");
   const { setLogin ,setSnackbarlog , setUserInfo} = useContext(LogInContext);
 
   const isAuthinticate= async()=>{
 
      try{
+
         const {data } = await axios.post('/api/login',{
           email : Email,
           password : Pass
         });
         
         setLogin(true)
+        setLoading(false);
         setSnackbarlog(true)
         setUserInfo(data)
         Cookies.set('userLogin',JSON.stringify(data),{expires: 1});
+
      }catch(err){
+      setLoading(false);
         setErrorMessege(err.response.data ? err.response.data.message : err.message)
         setError(true)
      }
@@ -56,6 +61,7 @@ function LogIn() {
 
         } else {
           setError(false);
+          setLoading(true);
           isAuthinticate();
           
         }
@@ -140,16 +146,20 @@ function LogIn() {
       <Button
         variant="contained"
         fullWidth
+        color={loading?"inherit":"primary"}
+        disabled={loading?true:false}
         sx={{
           textTransform: "inherit",
-          padding: "5px",
-          fontSize: "15px",
+          padding: "10px",
+          // fontSize: "8px",
           marginTop: "20px",
           boxShadow: "none",
         }}
         onClick={onHandleSubmit}
       >
-        Sign In
+        {loading?
+        <CircularProgress size={"20px"} thickness={6} />
+        :"Sign In"}
       </Button> 
     </Box>
   );
