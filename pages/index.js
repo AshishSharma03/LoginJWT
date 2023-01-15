@@ -27,22 +27,38 @@ function index() {
   const [login, setLogin] = useState(false);
   const [Load, setLoad] = useState(true);
   const [userInfo, setUserInfo] = useState({});
-  const [Info, setInfo] = useState(true);
   useEffect(() => {
     setTimeout(() => {
-      isOnline(navigator.onLine)
+      isOnline(navigator.onLine);
       setLoad(false);
     }, 500);
   }, []);
 
+  function timeout(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   useEffect(() => {
-    if (Cookies.get("userLogin")) {
-      setLogin(true);
-      setUserInfo(JSON.parse(Cookies.get("userLogin")));
-    } else {
-      Cookies.remove("userLogin", { path: "/" });
-    }
-  }, []);
+    let isCancel = false;
+    const handleChnage = async () => {
+      await timeout(500);
+      if (!isCancel) {
+        if (Cookies.get("userLogin")) {
+          setLogin(true);
+          setUserInfo(JSON.parse(Cookies.get("userLogin")));
+        } else {
+          Cookies.remove("userLogin", { path: "/" });
+          setLogin(false);
+        }
+      }
+    };
+
+    handleChnage();
+
+    return () => {
+      isCancel = true;
+    };
+  }, [userInfo]);
 
   useEffect(() => {
     const handleisOnline = () => {
@@ -90,7 +106,7 @@ function index() {
       {online ? (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          open={!login ? Info : false}
+          open={!login ? true : false}
           autoHideDuration={6000}
         >
           <Alert severity="success">

@@ -8,8 +8,6 @@ export default async function handler(req, res) {
   const user = await User.findOne({ email: req.body.email });
   //    console.log(req.body)
 
-  try{
-
       if (user && bcrypt.compareSync(req.body.password, user.password)) {
           const token = signToken(user);
           res.send({
@@ -24,9 +22,5 @@ export default async function handler(req, res) {
             res.status(401).json({ message: "Invalid user or password" });
             res.status(500).json({ message: "Internal Server Error" });
         }
-    }catch(err){
-        res.status(401).json({ message: "Invalid user or password" });
-        res.status(500).json({ message: "Internal Server Error" });
-
-    }
+    
 }

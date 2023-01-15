@@ -1,13 +1,14 @@
 import {
+  Alert,
   AppBar,
   Avatar,
   Box,
   Card,
-
   CardHeader,
   Container,
   IconButton,
   Rating,
+  Snackbar,
   Stack,
   Toolbar,
   Typography,
@@ -21,9 +22,9 @@ import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Head from "next/head";
 import Cookies from "js-cookie";
+import Footer from "../footer";
 
-
-function MainSesson({username,isAdmin,email}) {
+function MainSesson({ username, isAdmin, email }) {
   const { setLogin } = useContext(LogInContext);
   return (
     <Box>
@@ -42,7 +43,7 @@ function MainSesson({username,isAdmin,email}) {
             <IconButton
               onClick={() => {
                 setLogin(false);
-                Cookies.remove('userLogin',{path:'/'})
+                Cookies.remove("userLogin", { path: "/" });
               }}
             >
               <PowerSettingsNewRoundedIcon
@@ -53,7 +54,7 @@ function MainSesson({username,isAdmin,email}) {
         </Container>
       </AppBar>
       <Box
-        minHeight={"100vh"}
+        minHeight={{ sm: "90vh", xs: "85vh" }}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -62,6 +63,15 @@ function MainSesson({username,isAdmin,email}) {
           gap: "20px",
         }}
       >
+        <Typography
+          sx={{
+            fontSize: { xs: "40px", sm: "50px" },
+            fontWeight: "900",
+            textAlign: "center",
+          }}
+        >
+          Welcome <span style={{ color: "#003FB9" }}>{username}</span> !
+        </Typography>
         <Card
           sx={{
             width: "300px",
@@ -76,14 +86,22 @@ function MainSesson({username,isAdmin,email}) {
                 <Typography sx={{ fontSize: "20px", fontWeight: "800" }}>
                   {username}
                 </Typography>
-                <VerifiedUserOutlinedIcon sx={{ color:(isAdmin)? "green":'gray' }} />{" "}
+                <VerifiedUserOutlinedIcon
+                  sx={{ color: isAdmin ? "green" : "gray" }}
+                />{" "}
               </Stack>
             }
             subheader={email}
           />
         </Card>
         <Rating />
+        <Box padding="10px">
+          <Alert severity="info">
+            Cookies expires in 1 minute and redirect to "Signin" page.
+          </Alert>
+        </Box>
       </Box>
+      <Footer />
     </Box>
   );
 }

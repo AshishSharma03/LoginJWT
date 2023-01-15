@@ -8,6 +8,7 @@ import axios from "axios";
 import { LogInContext } from "../../core/sessionhandle/LoginContext";
 import Cookies from "js-cookie";
 
+
 function LogIn() {
   const [Email, setEmail] = useState();
   const [Pass, setPass] = useState();
@@ -29,10 +30,11 @@ function LogIn() {
         setLoading(false);
         setSnackbarlog(true)
         setUserInfo(data)
-        Cookies.set('userLogin',JSON.stringify(data),{expires: 1});
+        Cookies.set('userLogin',JSON.stringify(data),{expires: 0.0008});
 
      }catch(err){
-      setLoading(false);
+    
+        setLoading(false);
         setErrorMessege(err.response.data ? err.response.data.message : "Invalid User or Password");
         setError(true)
      }
