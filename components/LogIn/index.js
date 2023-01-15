@@ -23,7 +23,7 @@ function LogIn() {
         const {data } = await axios.post('/api/login',{
           email : Email,
           password : Pass
-        });
+        })
         
         setLogin(true)
         setLoading(false);
@@ -33,8 +33,7 @@ function LogIn() {
 
      }catch(err){
       setLoading(false);
-        setErrorMessege(err.response.data ? err.response.data.message : err.message)
-        // setErrorMessege( err.message)
+        setErrorMessege(err.response.data ? err.response.data.message : "Invalid User or Password");
         setError(true)
      }
   }

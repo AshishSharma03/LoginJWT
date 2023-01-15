@@ -19,6 +19,7 @@ export default async function handler(req, res) {
               email: user.email,
               isAdmin: user.isAdmin,
             });
+            
         } else {
             res.status(401).json({ message: "Invalid user or password" });
             res.status(500).json({ message: "Internal Server Error" });

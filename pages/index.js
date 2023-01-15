@@ -41,6 +41,8 @@ function index() {
     if(Cookies.get('userLogin')){
       setLogin(true);
       setUserInfo(JSON.parse(Cookies.get('userLogin')))
+    }else{
+      Cookies.remove('userLogin',{path:'/'})
     }
 
   },[])
